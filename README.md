@@ -1,24 +1,24 @@
 # Summary
-Raspberry Pi (A/B/2) Python Camera script with it's focus on image quality, automation and an easy setup.
+Raspberry Pi (A/B/2) Python Camera script with its focus on image quality, automation, and an easy setup.
 
 # What works
 Picam.py
 - Takes images based on motion detection
 - Automatically changes day/night settings based on your local sunset/sunrise
-- Camera LED on/off during the night/day (neighbour friendly)
+- Turns camera LED on/off during the night/day (neighbour friendly)
 
 In combination with the storageController.sh script:
 - The picam.py script writes the images to a 32 MB RAMdisk for optimal speed
 - Images on the RAMdisk are moved to a network folder, parallel to the pycam.py still shooting images.
-- Checks are made to make sure the network location is online. If the network location goes down, images are temporary written to a folder on the SD card until the network folder is back online.
+- Checks are made to make sure the network location is online. If the network location goes down, images are temporarily written to a folder on the SD card until the network folder is back online.
 
-You don't need both scripts, Picam.py can easily run on it's own and write the images to a folder. 
+You don't need both scripts. Picam.py can easily run on its own and write the images to a folder. 
 
 # ToDo
-The script is still in the works, but a lot planned:
+The script is still in the works, but a lot is planned:
 - Optimal dynamic motion detection level
-- Easy installer (although the scripts isn't hard to install..)
-- Website to manage the script / see the recently taken images.
+- Easy installer (although the scripts aren't hard to install..)
+- Website to manage the script / see the recently taken images
 See the issues list for full details.
 
 # How to install
