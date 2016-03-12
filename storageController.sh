@@ -60,7 +60,12 @@ do
 	sudo ps ax | grep -v grep | grep "$PICAM_SCRIPT_NAME" > /dev/null
 	if ! [ $? -eq 0 ]; then
 	  	echo "$DATE - PiCam down. Restarting script in 5 seconds" >> $LOGFILE
-		sudo screen -d -m python $PICAM_SCRIPT_LOCATION/$PICAM_SCRIPT_NAME
+	  	if [ $TERM_MP = "screen" ]; then
+	  		sudo screen -d -m python $PICAM_SCRIPT_LOCATION/$PICAM_SCRIPT_NAME
+	  	else
+	  		sudo tmux new-session -d -s picam-session 'python $PICAM_SCRIPT_LOCATION/$PICAM_SCRIPT_NAME'
+	  		sudo tmux detach -s picam-session
+	  	fi		
 		sleep 10
 	fi
 
