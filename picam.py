@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 import os
 import picamera
 import picamera.array
@@ -14,33 +16,44 @@ camera = picamera.PiCamera()
 
 # ----------------------- Settings ------------------------------------------------------------
 
+config = {}
+
+file_name = "picam.cfg"
+config_file= open(file_name)
+ 
+for line in config_file:
+    line = line.strip()
+    if line and line[0] is not "#" and line[-1] is not "=":
+        var,val = line.rsplit("=",1)
+        config[var.strip()] = val.strip()
+
 # Image file save loction? No tailing /
 # Leave at /mnt/picam_ramdisk when using the storageController.sh
-imageFileLocation        = '/mnt/picam_ramdisk'
-imageFileLocationOffline = '/mnt/picam_offline'     # Set to None (without '') if not used
+imageFileLocation        = config["RAMDISK"]
+imageFileLocationOffline = config["OFFLINE"]     # Set to None (without '') if not used
 
 # Camera
-camera.resolution = (1296, 972)
-camera.hflip = False
-camera.vflip = False
-camera.rotation = 270
+camera.resolution = (config["CAM_RESOLUTION_X"], config["CAM_RESOLUTION_Y"])
+camera.hflip = config["CAM_HFLIP"]
+camera.vflip = config["CAM_VFLIP"]
+camera.rotation = config["CAM_ROTATION"]
 
-imageQuality = 15  # jpg image quality 0-100 (200KB-1.5MB per image)
+imageQuality = config["IMAGE_QUALITY"]  # jpg image quality 0-100 (200KB-1.5MB per image)
 
 # Astral location for sunset and sunrise/ Find your nearest city here: http://pythonhosted.org/astral/#cities
-astral_location = "Amsterdam"
-astralIsDay = True	# Start in Day mode
+astral_location = config["ASTRAL_LOCATION"]
+astralIsDay = config["ASTRAL_IS_DAY"]
 
 # LED settings
-CamLed = 5  # Use 5 for Model A/B and 32 for Model B+
-ledTurnOnTime = "23:00"  # use 24H scheme
-ledTurnOffTime = "06:00"  # use 24H scheme
+CamLed = config["CAM_LED"]
+ledTurnOnTime = config["LED_TURN_ON_TIME"]
+ledTurnOffTime = config["LED_TURN_OFF_TIME"]
 
 # Motion detection
-motionScoreDay = 100
-motionScoreNight = 50
+motionScoreDay = config["MOTION_SCORE_DAY"]
+motionScoreNight = config["MOTION_SCORE_NIGHT"]
 
-imagesToShootAtMotion = 1  # How many images you want when motion is detected?
+imagesToShootAtMotion = config["IMAGES_TO_SHOOT_AT_MOTION"]
 
 
 #-----------------------------------------------------------------------------------------------

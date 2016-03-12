@@ -1,18 +1,6 @@
 #! /bin/sh
 
-RAMDISK="/mnt/picam_ramdisk"	# ramdisk location
-OFFLINE="/mnt/picam_offline"	# temporary offline storage
-NETWORK="/mnt/serv"		# network storage location
-
-SERVER_IP="192.168.1.10"	# ip of your server
-SERVER_USERNAME="MoCam"
-SERVER_PASSWORD="NC700xCam"
-SERVER_FOLDER="MoCam"		# the shared folder on the server
-
-PICAM_SCRIPT_NAME="picam.py"
-PICAM_SCRIPT_LOCATION="/home/pi"
-
-LOGFILE="/home/pi/picam.log"
+source picam.cfg
 
 # create the ramdisk and offline location if not found
 if [ ! -d $RAMDISK ]; then
@@ -27,13 +15,14 @@ fi
 
 # mount the ramdisk
 if ! grep -qs $RAMDISK /proc/mounts; then
-	sudo mount -t tmpfs -o size=20m tmpfs $RAMDISK
+	sudo mount -t tmpfs -o size=$RAMDISK_SIZE tmpfs $RAMDISK
 fi
 
 echo "$(date) - Storagecontroller startup done." >> $LOGFILE
 echo "$(date) - Storagecontroller startup done. If you SCREEN'd here, ALT-D your way out."
 
 SERVER_OFFLINE_TRIES=0
+
 
 while :
 do
@@ -65,6 +54,7 @@ do
 		# reset the network fail counter
 		SERVER_OFFLINE_TRIES=0
 	fi
+
 
 	# check if the picam script/process is still alive
 	sudo ps ax | grep -v grep | grep "$PICAM_SCRIPT_NAME" > /dev/null
@@ -101,4 +91,3 @@ do
 
         sleep 3
 done
-
